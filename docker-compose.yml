@@ -1,0 +1,44 @@
+services:
+  careerpulse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      CAREERPULSE_SECRET_KEY: ${CAREERPULSE_SECRET_KEY:?Set CAREERPULSE_SECRET_KEY in .env}
+      CAREERPULSE_DATABASE: /data/careerpulse.sqlite3
+      CAREERPULSE_DATA_DIR: /app/dataset
+      FLASK_DEBUG: "0"
+    volumes:
+      - careerpulse-data:/data
+    networks:
+      - careerpulse-internal
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/api/health', timeout=5)"
+      interval: 30s
+      timeout: 8s
+      retries: 5
+      start_period: 180s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  careerpulse-data:
+    name: careerpulse-data
+
+networks:
+  careerpulse-internal:
+    driver: bridge

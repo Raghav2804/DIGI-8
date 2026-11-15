@@ -1,0 +1,35 @@
+# Python bytecode, test/runtime caches, and virtual environments
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Version control, IDE, and operating-system files
+.git/
+.gitignore
+.vscode/
+.idea/
+.vs/
+.DS_Store
+Thumbs.db
+
+# Local environment and logs
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Local SQLite data is intentionally initialized into a Compose volume.
+database/*.sqlite3
+database/*.db
